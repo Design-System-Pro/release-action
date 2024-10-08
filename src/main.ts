@@ -1,5 +1,5 @@
-import { transform } from './generator/style-dictionary';
-import { getTokenPath } from './options';
+import { transform } from "./generator/style-dictionary";
+import { getTokenPath } from "./options";
 
 (async () => {
   await transform({

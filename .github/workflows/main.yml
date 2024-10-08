@@ -1,0 +1,19 @@
+name: Release DS Pro Tokens
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  integrate-tokens:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run DS Pro Token Integration Action
+        uses: ./
+        with:
+          tokens_path: "example"
