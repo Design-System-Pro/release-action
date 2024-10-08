@@ -5,3 +5,7 @@ inputs:
   tokens_path:
     description: "The repository path where the tokens.json can be found."
     required: true
+
+runs:
+  using: "node18"
+  main: "dist/index.js"
