@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "target": "ES6",
+    "target": "ES2015",
     "module": "ES2015",
     "outDir": "./dist",
     "moduleResolution": "Bundler",
     "strict": true,
     "esModuleInterop": true,
     "emitDeclarationOnly": false,
-    "declaration": false
+    "declaration": false,
+    "sourceMap": true
   },
   "include": ["src"]
 }
