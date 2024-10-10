@@ -36,7 +36,8 @@ async function run(): Promise<void> {
     // Update release.config.cjs with the correct dist-dir
     const releaseConfig = require(userReleaseConfigPath);
     const gitPlugin = releaseConfig.plugins.find(
-      (plugin) => Array.isArray(plugin) && plugin[0] === "@semantic-release/git"
+      (plugin: unknown) =>
+        Array.isArray(plugin) && plugin[0] === "@semantic-release/git"
     );
     if (gitPlugin) {
       gitPlugin[1].assets = [`${distDir}/**`];
