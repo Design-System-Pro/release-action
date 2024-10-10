@@ -1,15 +1,16 @@
-name: "DS Pro Tokens Release"
-description: "Connect with DS Pro and release your tokens"
-author: "DS Pro"
+name: 'Semantic Release Action'
+description: 'GitHub Action for semantic-release with dist folder publishing'
 inputs:
-  release_branch:
-    description: "The branch that contains the tokens to be released. Defaults to main."
-    required: false
-    default: "main"
-  tokens_path:
-    description: "The repository path where the tokens.json can be found."
+  github-token:
+    description: 'GitHub token for authentication'
     required: true
-
+  dist-dir:
+    description: 'Path to the dist directory to be published'
+    required: true
+    default: 'dist'
 runs:
-  using: "node20"
-  main: "dist/index.js"
+  using: 'node20'
+  main: 'dist/index.js'
+branding:
+  icon: 'package'
+  color: 'green'
