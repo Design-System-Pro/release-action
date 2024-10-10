@@ -2,39 +2,39 @@
 
 ## Overview
 
-This GitHub Action is designed to seamlessly integrate DS Pro (Design System Pro) into your tokens repository. It automates the process of releasing tokens based on their stage as marked in Figma, streamlining the workflow between your design system and your codebase.
+This GitHub Action automates the release process for design tokens managed by DS Pro (Design System Pro). It seamlessly integrates with your token repository, ensuring that your design system stays in sync with your codebase.
 
 ## Purpose
 
-The main purpose of this action is to:
+The main objectives of this action are to:
 
-1. Monitor the tokens.json files committed by DS Pro to your repository.
-2. Analyze the stage of the tokens as defined in Figma.
-3. Automatically release the tokens based on their stage, ensuring that your codebase always has access to the most up-to-date design tokens.
+1. Automate the release process for design tokens committed by DS Pro.
+2. Maintain consistent versioning across your design system and codebase.
+3. Streamline the workflow between designers and developers.
 
 ## How It Works
 
-1. When DS Pro commits new or updated tokens.json files to your repository, this action is triggered.
-2. The action reads the tokens.json files and determines the stage of each token (e.g., development, staging, production).
-3. Based on the token stages, the action performs the appropriate release process:
-   - Development tokens may be published to a development or testing environment.
-   - Staging tokens could be released to a pre-production environment for final testing.
-   - Production tokens are released to your main production environment.
+1. When new or updated tokens are committed to your repository by DS Pro, this action is triggered.
+2. The action analyzes the committed changes and determines the appropriate version bump (major, minor, or patch) based on the nature of the updates.
+3. It then creates a new release with the updated version number and generates release notes.
+4. The action can also be configured to publish the updated package to npm if desired.
 
-## Benefits
+## Features
 
-- **Automation**: Reduces manual intervention in the token release process.
-- **Consistency**: Ensures that your codebase always uses the correct version of design tokens.
-- **Efficiency**: Streamlines the workflow between designers using Figma and developers implementing the design system.
-- **Version Control**: Maintains a clear history of token changes and releases.
+- **Automated Versioning**: Intelligently determines the appropriate version bump based on token changes.
+- **Release Generation**: Creates GitHub releases with detailed release notes.
+- **npm Publishing**: Optional automatic publishing to npm registry.
+- **Customizable**: Configurable to fit your specific workflow and requirements.
 
-## Setup and Configuration
+## Setup
 
-(Add instructions for setting up and configuring the action in a repository)
+1. Add this action to your repository by creating a `.github/workflows/release.yml` file.
+2. Configure the workflow to trigger on pushes to your main branch or as needed.
+3. Ensure you have the necessary secrets set up in your repository settings for npm publishing (if used).
 
 ## Usage
 
-(Provide examples of how to use the action, including any inputs or outputs)
+Here's a basic example of how to use this action in your workflow:
 
 ## Contributing
 
