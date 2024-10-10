@@ -27412,6 +27412,7 @@ var __webpack_exports__ = {};
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(4708);
 /* harmony import */ var _actions_exec__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(9365);
 /* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(9896);
+/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(6928);
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -27421,6 +27422,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+
 
 
 
@@ -27435,6 +27437,25 @@ function run() {
             }
             // Set up environment variables
             process.env.GITHUB_TOKEN = token;
+            // Check if release.config.cjs exists in the user's context
+            const userReleaseConfigPath = __nccwpck_require__.ab + "release.config.cjs";
+            if (!fs__WEBPACK_IMPORTED_MODULE_2__.existsSync(__nccwpck_require__.ab + "release.config.cjs")) {
+                // If it doesn't exist, copy the one from the action's context
+                const actionReleaseConfigPath = path__WEBPACK_IMPORTED_MODULE_3__.join(__dirname, "release.config.cjs");
+                fs__WEBPACK_IMPORTED_MODULE_2__.copyFileSync(actionReleaseConfigPath, userReleaseConfigPath);
+                _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("Copied release.config.cjs to the user's context");
+            }
+            else {
+                _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("Using existing release.config.cjs from the user's context");
+            }
+            // Update release.config.cjs with the correct dist-dir
+            const releaseConfig = require(__nccwpck_require__.ab + "release.config.cjs");
+            const gitPlugin = releaseConfig.plugins.find((plugin) => Array.isArray(plugin) && plugin[0] === "@semantic-release/git");
+            if (gitPlugin) {
+                gitPlugin[1].assets = [`${distDir}/**`];
+            }
+            fs__WEBPACK_IMPORTED_MODULE_2__.writeFileSync(__nccwpck_require__.ab + "release.config.cjs", `module.exports = ${JSON.stringify(releaseConfig, null, 2)};`);
+            _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Updated release.config.cjs with dist-dir: ${distDir}`);
             // Install dependencies
             yield _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("npm", ["ci"]);
             // Run semantic-release
