@@ -5,16 +5,12 @@ import * as path from "path";
 
 async function run(): Promise<void> {
   try {
-    const token = core.getInput("github-token", { required: true });
-    const distDir = core.getInput("dist-dir", { required: true });
+    const distDir = core.getInput("dist-dir", { required: true }) || "./dist";
 
     // Verify dist directory exists
     if (!fs.existsSync(distDir)) {
       throw new Error(`Dist directory '${distDir}' does not exist`);
     }
-
-    // Set up environment variables
-    process.env.GITHUB_TOKEN = token;
 
     // Check if release.config.cjs exists in the user's context
     const userReleaseConfigPath = path.join(
@@ -27,29 +23,28 @@ async function run(): Promise<void> {
         __dirname,
         "release.config.cjs"
       );
-      fs.copyFileSync(actionReleaseConfigPath, userReleaseConfigPath);
-      core.info("Copied release.config.cjs to the user's context");
+
+      // Read the content of the action's release.config.cjs
+      let releaseConfigContent = fs.readFileSync(
+        actionReleaseConfigPath,
+        "utf8"
+      );
+
+      // Replace the {{dist-dir}} placeholder with the actual distDir value
+      releaseConfigContent = releaseConfigContent.replace(
+        "{{dist-dir}}",
+        distDir
+      );
+
+      // Write the modified content to the user's context
+      fs.writeFileSync(userReleaseConfigPath, releaseConfigContent);
+
+      core.info(
+        `Copied and updated release.config.cjs with dist-dir: ${distDir}`
+      );
     } else {
       core.info("Using existing release.config.cjs from the user's context");
     }
-
-    // Update release.config.cjs with the correct dist-dir
-    const releaseConfig = require(userReleaseConfigPath);
-    const gitPlugin = releaseConfig.plugins.find(
-      (plugin: unknown) =>
-        Array.isArray(plugin) && plugin[0] === "@semantic-release/git"
-    );
-    if (gitPlugin) {
-      gitPlugin[1].assets = [`${distDir}/**`];
-    }
-    fs.writeFileSync(
-      userReleaseConfigPath,
-      `module.exports = ${JSON.stringify(releaseConfig, null, 2)};`
-    );
-    core.info(`Updated release.config.cjs with dist-dir: ${distDir}`);
-
-    // Install dependencies
-    await exec.exec("npm", ["ci"]);
 
     // Run semantic-release
     await exec.exec("npx", ["semantic-release"]);

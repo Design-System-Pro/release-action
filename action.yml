@@ -1,13 +1,10 @@
 name: 'Semantic Release Action'
 description: 'GitHub Action for semantic-release with dist folder publishing'
 inputs:
-  github-token:
-    description: 'GitHub token for authentication'
-    required: true
   dist-dir:
     description: 'Path to the dist directory to be published'
     required: true
-    default: 'dist'
+    default: './dist'
 runs:
   using: 'node20'
   main: 'dist/index.js'
