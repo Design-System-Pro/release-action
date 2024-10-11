@@ -46,9 +46,6 @@ async function run(): Promise<void> {
       core.info("Using existing release.config.cjs from the user's context");
     }
 
-    // Install dependencies
-    await exec.exec("npm", ["ci"]);
-
     // Run semantic-release
     await exec.exec("npx", ["semantic-release"]);
 
