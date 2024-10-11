@@ -5,16 +5,12 @@ import * as path from "path";
 
 async function run(): Promise<void> {
   try {
-    const token = core.getInput("github-token", { required: true });
-    const distDir = core.getInput("dist-dir", { required: true });
+    const distDir = core.getInput("dist-dir", { required: true }) || "./dist";
 
     // Verify dist directory exists
     if (!fs.existsSync(distDir)) {
       throw new Error(`Dist directory '${distDir}' does not exist`);
     }
-
-    // Set up environment variables
-    process.env.GITHUB_TOKEN = token;
 
     // Check if release.config.cjs exists in the user's context
     const userReleaseConfigPath = path.join(
