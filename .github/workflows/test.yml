@@ -31,3 +31,5 @@ jobs:
 
       - name: Run GitHub Action
         uses: ./
+        with:
+          dry-run: true

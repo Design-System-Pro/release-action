@@ -6,6 +6,7 @@ import * as path from "path";
 async function run(): Promise<void> {
   try {
     const distDir = core.getInput("dist-dir", { required: true }) || "./dist";
+    const dryRun = core.getInput("dry-run", { required: false }) === "true";
 
     // Verify dist directory exists
     if (!fs.existsSync(distDir)) {
@@ -49,8 +50,10 @@ async function run(): Promise<void> {
       core.info("Using existing release.config.cjs from the user's context");
     }
 
+    const releaseOptions = dryRun ? ["--dry-run"] : [];
+
     // Run semantic-release
-    await exec.exec("npx", ["semantic-release"]);
+    await exec.exec("npx", ["semantic-release", ...releaseOptions]);
 
     core.info("Semantic release completed successfully");
   } catch (error) {
