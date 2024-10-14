@@ -35,6 +35,8 @@ jobs:
         run: pnpm build
 
       - name: Run GitHub Action
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: ./
         with:
           dry-run: true
