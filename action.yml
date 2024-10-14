@@ -5,6 +5,11 @@ inputs:
     description: 'Path to the dist directory to be published'
     required: true
     default: './dist'
+  dry-run:
+    description: 'Whether to perform a dry run (no changes are made)'
+    required: false
+    default: 'false'
+
 runs:
   using: 'node20'
   main: 'dist/index.js'

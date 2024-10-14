@@ -27430,17 +27430,19 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const distDir = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("dist-dir", { required: true }) || "./dist";
+            const dryRun = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("dry-run", { required: false }) === "true";
             // Verify dist directory exists
             if (!fs__WEBPACK_IMPORTED_MODULE_2__.existsSync(distDir)) {
                 throw new Error(`Dist directory '${distDir}' does not exist`);
             }
             // Check if release.config.cjs exists in the user's context
-            const userReleaseConfigPath = __nccwpck_require__.ab + "release.config.cjs";
-            if (!fs__WEBPACK_IMPORTED_MODULE_2__.existsSync(__nccwpck_require__.ab + "release.config.cjs")) {
+            const userReleaseConfigPath = path__WEBPACK_IMPORTED_MODULE_3__.join(process.cwd(), "release.config.cjs".toString() // toString() is a hack to prevent github action's release config file from being copied to dist folder
+            );
+            if (!fs__WEBPACK_IMPORTED_MODULE_2__.existsSync(userReleaseConfigPath)) {
                 // If it doesn't exist, copy the one from the action's context
-                const actionReleaseConfigPath = path__WEBPACK_IMPORTED_MODULE_3__.join(__dirname, "template.release.config.cjs");
+                const actionReleaseConfigPath = __nccwpck_require__.ab + "template.release.config.cjs";
                 // Read the content of the action's release.config.cjs
-                let releaseConfigContent = fs__WEBPACK_IMPORTED_MODULE_2__.readFileSync(actionReleaseConfigPath, "utf8");
+                let releaseConfigContent = fs__WEBPACK_IMPORTED_MODULE_2__.readFileSync(__nccwpck_require__.ab + "template.release.config.cjs", "utf8");
                 // Replace the {{dist-dir}} placeholder with the actual distDir value
                 releaseConfigContent = releaseConfigContent.replace("{{dist-dir}}", distDir);
                 // Write the modified content to the user's context
@@ -27451,8 +27453,9 @@ function run() {
             else {
                 _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("Using existing release.config.cjs from the user's context");
             }
+            const releaseOptions = dryRun ? ["--dry-run"] : [];
             // Run semantic-release
-            yield _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("npx", ["semantic-release"]);
+            yield _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("npx", ["semantic-release", ...releaseOptions]);
             _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("Semantic release completed successfully");
         }
         catch (error) {
