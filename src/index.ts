@@ -21,7 +21,7 @@ async function run(): Promise<void> {
       // If it doesn't exist, copy the one from the action's context
       const actionReleaseConfigPath = path.join(
         __dirname,
-        "release.config.cjs"
+        "template.release.config.cjs"
       );
 
       // Read the content of the action's release.config.cjs
@@ -37,7 +37,10 @@ async function run(): Promise<void> {
       );
 
       // Write the modified content to the user's context
-      fs.writeFileSync(userReleaseConfigPath, releaseConfigContent);
+      fs.writeFileSync(
+        userReleaseConfigPath.replace("template.", ""), // Remove the "template." prefix
+        releaseConfigContent
+      );
 
       core.info(
         `Copied and updated release.config.cjs with dist-dir: ${distDir}`
