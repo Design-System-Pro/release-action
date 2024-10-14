@@ -27438,13 +27438,14 @@ function run() {
             const userReleaseConfigPath = __nccwpck_require__.ab + "release.config.cjs";
             if (!fs__WEBPACK_IMPORTED_MODULE_2__.existsSync(__nccwpck_require__.ab + "release.config.cjs")) {
                 // If it doesn't exist, copy the one from the action's context
-                const actionReleaseConfigPath = __nccwpck_require__.ab + "release.config1.cjs";
+                const actionReleaseConfigPath = path__WEBPACK_IMPORTED_MODULE_3__.join(__dirname, "template.release.config.cjs");
                 // Read the content of the action's release.config.cjs
-                let releaseConfigContent = fs__WEBPACK_IMPORTED_MODULE_2__.readFileSync(__nccwpck_require__.ab + "release.config1.cjs", "utf8");
+                let releaseConfigContent = fs__WEBPACK_IMPORTED_MODULE_2__.readFileSync(actionReleaseConfigPath, "utf8");
                 // Replace the {{dist-dir}} placeholder with the actual distDir value
                 releaseConfigContent = releaseConfigContent.replace("{{dist-dir}}", distDir);
                 // Write the modified content to the user's context
-                fs__WEBPACK_IMPORTED_MODULE_2__.writeFileSync(__nccwpck_require__.ab + "release.config.cjs", releaseConfigContent);
+                fs__WEBPACK_IMPORTED_MODULE_2__.writeFileSync(userReleaseConfigPath.replace("template.", ""), // Remove the "template." prefix
+                releaseConfigContent);
                 _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Copied and updated release.config.cjs with dist-dir: ${distDir}`);
             }
             else {
