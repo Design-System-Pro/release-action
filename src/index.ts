@@ -16,13 +16,13 @@ async function run(): Promise<void> {
     // Check if release.config.cjs exists in the user's context
     const userReleaseConfigPath = path.join(
       process.cwd(),
-      "release.config.cjs"
+      "release.config.cjs".toString() // toString() is a hack to prevent github action's release config file from being copied to dist folder
     );
     if (!fs.existsSync(userReleaseConfigPath)) {
       // If it doesn't exist, copy the one from the action's context
       const actionReleaseConfigPath = path.join(
-        __dirname,
-        "template.release.config.cjs"
+        process.cwd(),
+        "/src/template.release.config.cjs"
       );
 
       // Read the content of the action's release.config.cjs
