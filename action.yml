@@ -9,10 +9,35 @@ inputs:
     description: 'Whether to perform a dry run (no changes are made)'
     required: false
     default: 'false'
+  github_token:
+    description: 'GitHub token'
+    required: true
 
 runs:
-  using: 'node20'
-  main: 'dist/index.js'
+    using: composite
+    steps:
+      - name: Import Configuration files
+        shell: bash
+        run: |
+          npm install -g @semantic-release/changelog@6.0.3 @semantic-release/commit-analyzer@13.0.0 @semantic-release/git@10.0.1 @semantic-release/github@11.0.0 @semantic-release/release-notes-generator@14.0.1 semantic-release@24.1.2
+          cp $GITHUB_ACTION_PATH/template.release.config.js ./release.config.js
+
+      - name: Replace dist directory placeholder
+        shell: bash
+        run: |
+          sed -i 's|{{DIST_DIR}}|${{ inputs.dist-dir }}|g' ./release.config.js
+
+      - name: Perform release
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ inputs.github_token }}
+        run: |
+          if [ "${{ inputs.dry-run }}" = "true" ]; then
+            npx semantic-release --dry-run
+          else
+            npx semantic-release
+          fi
+
 branding:
   icon: 'package'
   color: 'green'
