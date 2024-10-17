@@ -9,7 +9,7 @@ inputs:
     description: 'Whether to perform a dry run (no changes are made)'
     required: false
     default: 'false'
-  github_token:
+  github-token:
     description: 'GitHub token'
     required: true
 
@@ -30,7 +30,7 @@ runs:
       - name: Perform release
         shell: bash
         env:
-          GITHUB_TOKEN: ${{ inputs.github_token }}
+          GITHUB_TOKEN: ${{ inputs.github-token }}
         run: |
           if [ "${{ inputs.dry-run }}" = "true" ]; then
             npx semantic-release --dry-run
