@@ -1,12 +1,7 @@
 {
   "name": "semantic-release-dist-action",
   "version": "1.0.0",
-  "type": "module",
   "description": "GitHub Action for semantic-release with dist folder publishing",
-  "main": "dist/index.js",
-  "scripts": {
-    "build": "tsc && ncc build --source-map --license licenses.txt"
-  },
   "keywords": [
     "github",
     "action",

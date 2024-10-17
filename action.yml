@@ -9,10 +9,20 @@ inputs:
     description: 'Whether to perform a dry run (no changes are made)'
     required: false
     default: 'false'
+  github_token:
+    description: 'GitHub token'
+    required: true
 
 runs:
-  using: 'node20'
-  main: 'dist/index.js'
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - --build-arg
+    - DIST_DIR=${{ inputs.dist-dir }}
+  env:
+    DRY_RUN: ${{ inputs.dry-run }}
+    GITHUB_TOKEN: ${{ inputs.github_token }}
+
 branding:
   icon: 'package'
   color: 'green'

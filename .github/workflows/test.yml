@@ -31,12 +31,8 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
-      - name: Build
-        run: pnpm build
-
       - name: Run GitHub Action
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: ./
         with:
           dry-run: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
