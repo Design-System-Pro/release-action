@@ -12,7 +12,6 @@ inputs:
   github_token:
     description: 'GitHub token'
     required: true
-    default: '${{ secrets.GITHUB_TOKEN }}'
 
 runs:
   using: 'docker'
