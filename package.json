@@ -4,9 +4,6 @@
   "type": "module",
   "description": "GitHub Action for semantic-release with dist folder publishing",
   "main": "dist/index.js",
-  "scripts": {
-    "build": "tsc && ncc build --source-map --license licenses.txt"
-  },
   "keywords": [
     "github",
     "action",
@@ -15,20 +12,13 @@
   ],
   "author": "tomasfrancisco",
   "license": "Apache-2.0",
-  "dependencies": {
-    "@actions/core": "^1.10.0",
-    "@actions/exec": "^1.1.1"
-  },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.0",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^11.0.0",
     "@semantic-release/release-notes-generator": "^14.0.1",
-    "@types/node": "^16.18.113",
-    "@vercel/ncc": "^0.38.2",
-    "semantic-release": "^24.1.2",
-    "typescript": "^5.6.3"
+    "semantic-release": "^24.1.2"
   },
   "packageManager": "pnpm@9.5.0",
   "engines": {
