@@ -1,4 +1,4 @@
-const config = {
+module.exports = {
   branches: ["main"],
   plugins: [
     "@semantic-release/commit-analyzer",
@@ -7,7 +7,7 @@ const config = {
     [
       "@semantic-release/git",
       {
-        assets: ["dist/**"],
+        assets: ["{{dist-dir}}"],
         message:
           "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}",
       },
@@ -15,5 +15,3 @@ const config = {
     "@semantic-release/github",
   ],
 };
-
-module.exports = config;
