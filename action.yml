@@ -5,6 +5,10 @@ inputs:
     description: 'Path to the dist directory to be published'
     required: true
     default: './dist'
+  release-branch:
+    description: 'The branch where a release will be created. Defaults to "main".'
+    required: true
+    default: '"main"'
   dry-run:
     description: 'Whether to perform a dry run (no changes are made)'
     required: false
@@ -26,6 +30,7 @@ runs:
         shell: bash
         run: |
           sed -i 's|{{DIST_DIR}}|${{ inputs.dist-dir }}|g' ./release.config.js
+          sed -i 's|{{RELEASE_BRANCH}}|${{ inputs.release-branch }}|g' ./release.config.js
 
       - name: Perform release
         shell: bash

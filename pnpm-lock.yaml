@@ -20,6 +20,9 @@ importers:
       '@semantic-release/github':
         specifier: ^11.0.0
         version: 11.0.0(semantic-release@24.1.2(typescript@5.6.3))
+      '@semantic-release/npm':
+        specifier: ^12.0.1
+        version: 12.0.1(semantic-release@24.1.2(typescript@5.6.3))
       '@semantic-release/release-notes-generator':
         specifier: ^14.0.1
         version: 14.0.1(semantic-release@24.1.2(typescript@5.6.3))
