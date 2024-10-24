@@ -5,6 +5,10 @@ inputs:
     description: 'Path to the dist directory to be published'
     required: true
     default: './dist'
+  release-branch:
+    description: 'The branch where a release will be created. Defaults to "main".'
+    required: true
+    default: '"main"'
   dry-run:
     description: 'Whether to perform a dry run (no changes are made)'
     required: false
@@ -12,10 +16,23 @@ inputs:
   github-token:
     description: 'GitHub token'
     required: true
+  node-auth-token:
+    description: 'Node.js auth token'
+    required: true
+  registry-url:
+    description: 'Registry URL where the dist directory will be published. Defaults to "https://npm.pkg.github.com".'
+    required: false
+    default: 'https://npm.pkg.github.com'
 
 runs:
     using: composite
     steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          registry-url: ${{ inputs.registry-url }}
+          node-version: "20.x"
+
       - name: Import Configuration files
         shell: bash
         run: |
@@ -26,11 +43,13 @@ runs:
         shell: bash
         run: |
           sed -i 's|{{DIST_DIR}}|${{ inputs.dist-dir }}|g' ./release.config.js
+          sed -i 's|{{RELEASE_BRANCH}}|${{ inputs.release-branch }}|g' ./release.config.js
 
       - name: Perform release
         shell: bash
         env:
           GITHUB_TOKEN: ${{ inputs.github-token }}
+          NODE_AUTH_TOKEN: ${{ inputs.node-auth-token }}
         run: |
           if [ "${{ inputs.dry-run }}" = "true" ]; then
             npx semantic-release --dry-run
