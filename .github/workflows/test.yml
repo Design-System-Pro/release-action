@@ -36,3 +36,4 @@ jobs:
         with:
           dry-run: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          node-auth-token: ${{ secrets.GITHUB_TOKEN }}
